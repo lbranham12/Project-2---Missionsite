@@ -1,0 +1,99 @@
+﻿@model IEnumerable<MissionSite.Models.Missions>
+@{
+    ViewBag.Title = "MissionFAQs";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="jumbotron mission">
+    <h1>@ViewBag.MissionName</h1>
+</div>
+<ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="@Url.Action("Index", "Missions")">Missions</a></li>
+    <li class="breadcrumb-item active">@ViewBag.MissionName</li>
+</ol>
+
+<p class="smalllink">
+    <strong>Mission President's Name:</strong> @ViewBag.PresName
+    <br />
+    <br />
+    <strong>Mission Address:</strong> @ViewBag.MissionAddress
+    <br />
+    <br />
+    <strong>Language: </strong>@ViewBag.MissionLanguage
+    <br />
+    <br />
+    <strong>Climate: </strong>@ViewBag.MissionClimate
+    <br />
+    <br />
+    <strong>Dominate Religion:</strong> @ViewBag.MissionReligion
+    <br /><br />
+    <strong>Country Flag: </strong>
+    <br /> <br />
+    <img style="height:200px; width:auto;" src="../Content/Images/@ViewBag.MissionFlag" alt="Flag" />
+</p>
+<br />
+<h3><strong>Q&A </strong></h3>
+<br />
+<div class="smalllink" ?>
+    Q - What was your favorite area?
+    <br />
+    A - Barcelona
+    <br />
+    A - Elche
+    <br />
+    A - Tarragona
+    <form method="post">
+        Reply:<br />
+        <textarea name='comment' id='comment'></textarea><br />
+
+        <input type='hidden' name='articleid' id='articleid' value='<? echo $_GET["id"]; ?>' />
+
+        <input type='submit' value='Submit' />
+    </form>
+    <br />
+    Q - What were some favorite foods?
+    <br />
+    A - Tapas
+    <br />
+    A - Paella
+    <br />
+    A - Chorizo
+    <form method="post">
+        Reply:<br />
+        <textarea name='comment' id='comment'></textarea><br />
+
+        <input type='hidden' name='articleid' id='articleid' value='<? echo $_GET["id"]; ?>' />
+
+        <input type='submit' value='Submit' />
+    </form>
+    <br />
+    Q - What are some interesting facts about the Barcelona mission?
+    <br />
+    A - The Spain Barcelona Mission takes in both Spain and Andora and offers the opportunity to experience different cultures depending on the area you are in. Catalan is spoken in certain areas along with many cultures speaking French, Portuguese, Romanian, and other languages. There is a ton of history that is seen wherever you are and is expressed often in the festivals.
+    <br />
+    A - Art by Gaudi; Catalonia is trying to separate itself from the rest of Spain and become an independent nation; it’s on the Mediteranean coast and has a ton of history.
+    <br />
+    A - We are the El Faro mission, which means the lighthouse. We were, at the time, the highest baptizing mission in Europe because our mission president taught us that if we were obedient with exactness, we would be blessed. And we were.
+    <form method="post">
+        Reply:<br />
+        <textarea name='comment' id='comment'></textarea><br />
+
+        <input type='hidden' name='articleid' id='articleid' value='<? echo $_GET["id"]; ?>' />
+        <br />
+        <input type='submit' value='Submit' />
+    </form>
+
+    <br />
+    <br />
+</div>
+<h3><strong>Add More Questions Here:</strong></h3>
+    <form id="contact_form" action="#" method="POST" enctype="multipart/form-data">
+        <div class="row">
+            <label for="name">Your name:</label><br />
+            <input id="name" class="input" name="name" type="text" value="" size="30" /><br />
+        </div>
+        <div class="row">
+            <label for="message">Your question:</label><br />
+            <textarea id="message" class="input" name="question" rows="7" cols="30"></textarea><br />
+        </div>
+        <input id="submit_button" type="submit" value="Submit" />
+    </form>

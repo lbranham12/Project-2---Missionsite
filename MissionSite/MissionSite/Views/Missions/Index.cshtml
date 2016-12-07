@@ -1,0 +1,55 @@
+﻿@model IEnumerable<MissionSite.Models.Missions>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="jumbotron"><h1>Learn about your Mission.</h1></div>
+
+<div class="container">
+    <div class="col-lg-5"></div>
+    <div class="col-lg-2">
+        
+        <div class="dropdown">
+
+            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+                Choose One
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                @foreach (var item in Model)
+                {
+                    <li>@Html.ActionLink(item.name, "MissionFAQs", new {missionName= item.name})</li>
+                }
+
+            </ul>
+
+
+            @*<ul class="dropdown-menu">
+                <li><a href="@Url.Action("MissionFAQs", "Missions", new { missionName = "Spain Barcelona Mission" })">Barcelona, Spain</a></li>
+                <li><a href="@Url.Action("MissionFAQs", "Missions", new { missionName = "Spain Malaga Mission" })">Malaga, Spain</a></li>
+                <li><a href="@Url.Action("MissionFAQs", "Missions", new { missionName = "California Arcadia Mission" })">Arcadia, California</a></li>
+            </ul>*@
+@*@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Mission_ID, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.Mission_ID, new SelectList(ViewBag.MissionBryce, "Mission_ID", "name"))
+                @Html.ValidationMessageFor(model => model.Mission_ID, "", new { @class = "text-danger" })
+            </div>
+
+        </div>
+    </div>
+}*@
+            
+        </div>
+    </div>
+    <div class="col-lg-5">
+
+    </div>
+</div>

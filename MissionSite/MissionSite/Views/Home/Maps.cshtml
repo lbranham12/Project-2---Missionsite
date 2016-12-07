@@ -1,0 +1,42 @@
+﻿
+@{
+    ViewBag.Title = "Maps";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="jumbotron"><h1>Maps</h1></div>
+
+<div class="container">
+    <div class="col-lg-5"></div>
+    <div class="col-lg-2">
+
+        <div class="dropdown">
+
+            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+                Choose One
+                <span class="caret"></span>
+            </button>
+
+            <ul class="dropdown-menu">
+                <li><a href=" @Url.Action("Maps", "Home", new { missionName = "Barcelona" }) ">Barcelona, Spain</a></li>
+                <li><a href="@Url.Action("Maps", "Home", new { missionName = "Malaga" })">Malaga, Spain</a></li>
+                <li><a href="@Url.Action("Maps", "Home", new { missionName = "Arcadia" })">Arcadia, California</a></li>
+            </ul>
+
+
+        </div>
+    </div>
+    <div class="col-lg-5">
+
+    </div>
+</div>
+<div class="container">
+    <div class="col-lg-3"></div>
+    <div class="col-lg-3">
+        <h3 style="text-align:center; font-family:Tahoma;">@ViewBag.MissionName</h3>
+        <br />
+            <img class="mattdenkers" style="height:600px; width:500px;" src="@ViewBag.Map" alt="Picture don't work" />
+       
+    </div>
+    <div class="col-lg-6"></div>
+</div>
