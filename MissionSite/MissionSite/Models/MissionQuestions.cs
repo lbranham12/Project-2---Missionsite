@@ -11,7 +11,7 @@ namespace MissionSite.Models
     public class MissionQuestions
     {
         [Key]
-        public int MissionQuestion_ID { get; set; }
+        public int? MissionQuestion_ID { get; set; }
 
         public int Mission_ID { get; set; }
 

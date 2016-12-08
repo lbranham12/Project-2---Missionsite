@@ -23,7 +23,7 @@ namespace MissionSite.Controllers
             return View(db.mission.ToList());
         }
 
-        
+        [Authorize]
         public ActionResult MissionFAQs(int? Mission_ID)
         {
             //string missionName
@@ -103,7 +103,7 @@ namespace MissionSite.Controllers
         {
             int tempMissionIDs = Convert.ToInt32(form["hdnMission"]);
             int tempUserID = 1;
-            tempUserID = Convert.ToInt32(Session["userID"]);
+            tempUserID = Convert.ToInt32(Session["User_ID"]);
             string tempQuestion = form["Question"].ToString();
             string tempAnswer = "No answer has been given.";
             MissionQuestions temp = new MissionQuestions { Mission_ID = tempMissionIDs, User_ID = tempUserID, question = tempQuestion, answer = tempAnswer };
@@ -112,11 +112,11 @@ namespace MissionSite.Controllers
             return RedirectToAction("MissionFAQs", "Missions", new { Mission_ID = tempMissionIDs });
         }
 
-        public ActionResult answerQuestion(FormCollection form, int MissionQuestion_ID, int Mission_ID)
+        public ActionResult answerQuestion(FormCollection form, int missionQuestionID, int missionID)
         {
             //load the db object based on the id given in parameters (missionQuestionID)
-            MissionQuestions tempQuestion = db.missionquestion.Find(MissionQuestion_ID);
-            int tempMissionIDs = Mission_ID;
+            MissionQuestions tempQuestion = db.missionquestion.Find(missionQuestionID);
+            int tempMissionIDs = missionID;
             string tempAnswer = form["Answer"].ToString();
             //Question temp = new Question { Mission_ID = tempMissionIDs, User_ID = tempUserID, question = tempQuestion, answer = tempAnswer };
             tempQuestion.answer = tempAnswer;

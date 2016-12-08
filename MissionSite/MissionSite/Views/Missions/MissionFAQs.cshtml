@@ -38,7 +38,7 @@
     <div class="question">
         @foreach (var item in Model)
         {
-            using (Html.BeginForm("answerQuestion", "Missions", new { missionQuestionID = item.MissionQuestion_ID, missionID = item.MissionQuestion_ID }))
+            using (Html.BeginForm("answerQuestion", "Missions", new { missionQuestionID = item.MissionQuestion_ID, missionID = item.Mission_ID }))
             {
                 <h3> @item.question </h3>
                 <p> @item.answer </p>
