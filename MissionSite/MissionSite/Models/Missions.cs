@@ -15,7 +15,7 @@ namespace MissionSite.Models
     {
         [Key]
         [HiddenInput(DisplayValue= false)]
-        public int? Mission_ID { get; set; }
+        public int Mission_ID { get; set; }
 
         [Display(Name = "Mission Name")]
         public string name { get; set; }

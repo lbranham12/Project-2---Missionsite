@@ -1,4 +1,5 @@
-﻿@model IEnumerable<MissionSite.Models.Missions>
+﻿@*@model IEnumerable<MissionSite.Models.Missions>*@
+@model IEnumerable<MissionSite.Models.MissionQuestions>
 @{
     ViewBag.Title = "MissionFAQs";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -33,7 +34,36 @@
 <br />
 <h3><strong>Q&A </strong></h3>
 <br />
-<div class="smalllink" ?>
+<div class="smalllink">
+    <div class="question">
+        @foreach (var item in Model)
+        {
+            using (Html.BeginForm("answerQuestion", "Missions", new { missionQuestionID = item.MissionQuestion_ID, missionID = item.MissionQuestion_ID }))
+            {
+                <h3> @item.question </h3>
+                <p> @item.answer </p>
+                @Html.TextArea("Answer")
+                <br /><br />
+                <button type="submit">Submit Answer</button>
+                <hr />
+            }
+        }
+    </div>
+</div>
+@using (Html.BeginForm("postQuestion", "Missions", FormMethod.Post))
+{
+    <br /><br />
+    <label for="asdf">Post Your Own Question</label>
+    @Html.TextArea("Question")<br />
+    <br />
+    <input type="hidden" name="hdnMission" value="@ViewBag.MissionID" id="hdnMission" />
+    <button type="submit">Submit Question</button>
+}
+
+
+
+
+@*<div class="smalllink" ?>
     Q - What was your favorite area?
     <br />
     A - Barcelona
@@ -96,4 +126,4 @@
             <textarea id="message" class="input" name="question" rows="7" cols="30"></textarea><br />
         </div>
         <input id="submit_button" type="submit" value="Submit" />
-    </form>
+    </form>*@

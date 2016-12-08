@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using MissionSite.DAL;
 using System.Data.SqlClient;
+using System.Data.Entity;
 
 namespace MissionSite.Controllers
 {
@@ -23,13 +24,32 @@ namespace MissionSite.Controllers
         }
 
         
-        public ActionResult MissionFAQs(string missionName)
+        public ActionResult MissionFAQs(int? Mission_ID)
         {
+            //string missionName
+            //Missions tempMission = db.mission.SingleOrDefault(mission1 => mission1.name == missionName);
+           
+
+
+            //int missionid;
+            //Missions tempMission = db.mission.FirstOrDefault(mission1 => mission1.name == missionName && mission1.Mission_ID == missionid);
             
-            if (missionName != null){
-                
-                Missions tempMission = db.mission.SingleOrDefault(mission1 => mission1.name == missionName);
-                ViewBag.MissionName = missionName;
+            //missionid = tempMission.Mission_ID;
+            //if (missionName != null){
+            if (Mission_ID != null){
+                List<MissionQuestions> questions = new List<MissionQuestions> { };
+                foreach (var quest in db.missionquestion)
+                {
+                    if(quest.Mission_ID == Mission_ID){
+                        questions.Add(quest);
+                    }
+                }
+
+
+
+                Missions tempMission = db.mission.Find(Mission_ID);
+                ViewBag.MissionID = tempMission.Mission_ID;
+                ViewBag.MissionName = tempMission.name;
                 ViewBag.PresName = tempMission.president;
                 ViewBag.MissionAddress = tempMission.streetaddress;
                 ViewBag.MissionLanguage = tempMission.language;
@@ -38,7 +58,7 @@ namespace MissionSite.Controllers
                 ViewBag.MissionFlag = tempMission.flag;
 
 
-                return View();
+                return View(questions);
             }
             else
             {
@@ -75,6 +95,34 @@ namespace MissionSite.Controllers
             //    //ViewBag.MissionFlag = "../Content/Images/califlag.png";
             ////}
             //return View();
+        }
+
+        //how to post questions
+        [HttpPost]
+        public ActionResult postQuestion(FormCollection form)
+        {
+            int tempMissionIDs = Convert.ToInt32(form["hdnMission"]);
+            int tempUserID = 1;
+            tempUserID = Convert.ToInt32(Session["userID"]);
+            string tempQuestion = form["Question"].ToString();
+            string tempAnswer = "No answer has been given.";
+            MissionQuestions temp = new MissionQuestions { Mission_ID = tempMissionIDs, User_ID = tempUserID, question = tempQuestion, answer = tempAnswer };
+            db.missionquestion.Add(temp);
+            db.SaveChanges();
+            return RedirectToAction("MissionFAQs", "Missions", new { Mission_ID = tempMissionIDs });
+        }
+
+        public ActionResult answerQuestion(FormCollection form, int MissionQuestion_ID, int Mission_ID)
+        {
+            //load the db object based on the id given in parameters (missionQuestionID)
+            MissionQuestions tempQuestion = db.missionquestion.Find(MissionQuestion_ID);
+            int tempMissionIDs = Mission_ID;
+            string tempAnswer = form["Answer"].ToString();
+            //Question temp = new Question { Mission_ID = tempMissionIDs, User_ID = tempUserID, question = tempQuestion, answer = tempAnswer };
+            tempQuestion.answer = tempAnswer;
+            db.Entry(tempQuestion).State = EntityState.Modified;
+            db.SaveChanges();
+            return RedirectToAction("MissionFAQs", "Missions", new { Mission_ID = tempMissionIDs });
         }
     }
 }

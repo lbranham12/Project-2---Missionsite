@@ -80,6 +80,7 @@ namespace MissionSite.Controllers
             {
                 if (string.Equals(email, LoginAttempt.email) && string.Equals(password, LoginAttempt.password))
                 {
+                    Session["User_ID"] = LoginAttempt.User_ID;
                     return RedirectToAction("Index", "Missions");
                 }
 
@@ -217,8 +218,8 @@ namespace MissionSite.Controllers
             bool rememberMe = false;
 
             FormsAuthentication.SetAuthCookie(email, rememberMe);
-            //Users temporaryUser = db.user.SingleOrDefault(user1 => user1.email == email && user1.password == password);
-            //Session["email"] = temporaryUser.User_ID;
+            Users temporaryUser = db.user.SingleOrDefault(user1 => user1.email == email && user1.password == password);
+            Session["email"] = temporaryUser.User_ID;
             return RedirectToAction("Index", "Home");
         }
 

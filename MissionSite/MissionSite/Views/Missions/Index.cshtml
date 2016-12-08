@@ -20,7 +20,8 @@
             <ul class="dropdown-menu">
                 @foreach (var item in Model)
                 {
-                    <li>@Html.ActionLink(item.name, "MissionFAQs", new {missionName= item.name})</li>
+                    <li>@Html.ActionLink(item.name, "MissionFAQs", new {Mission_ID= item.Mission_ID})</li>
+    @*<li>@Html.ActionLink(item.name, "MissionFAQs", new { missionName = item.name })</li>*@
                 }
 
             </ul>
