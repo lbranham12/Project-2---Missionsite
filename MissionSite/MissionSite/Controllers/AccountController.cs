@@ -73,6 +73,7 @@ namespace MissionSite.Controllers
         {
             string email = form["email"].ToString();
             string password = form["password"].ToString();
+            bool rememberMe = false;
 
             //edited to first or default not single or default
             Users LoginAttempt = db.user.FirstOrDefault(user1 => user1.email == email && user1.password == password);
@@ -80,6 +81,7 @@ namespace MissionSite.Controllers
             {
                 if (string.Equals(email, LoginAttempt.email) && string.Equals(password, LoginAttempt.password))
                 {
+                    FormsAuthentication.SetAuthCookie(email, rememberMe);
                     Session["User_ID"] = LoginAttempt.User_ID;
                     return RedirectToAction("Index", "Missions");
                 }
@@ -473,9 +475,13 @@ namespace MissionSite.Controllers
         // POST: /Account/LogOff
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult LogOff()
+        public ActionResult LogOff(FormCollection form)
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            string email = User.Identity.GetUserName();
+            FormsAuthentication.SetAuthCookie(email, true);
+            FormsAuthentication.SignOut();
+            Session.Abandon();
             return RedirectToAction("Index", "Home");
         }
 
