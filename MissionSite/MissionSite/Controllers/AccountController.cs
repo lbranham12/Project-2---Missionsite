@@ -10,6 +10,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using MissionSite.Models;
 using MissionSite.DAL;
+using System.Web.Security;
 
 namespace MissionSite.Controllers
 {
@@ -18,6 +19,7 @@ namespace MissionSite.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private MissionContext db = new MissionContext();
 
         public AccountController()
         {
@@ -147,37 +149,82 @@ namespace MissionSite.Controllers
 
 
 
+        [AllowAnonymous]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Register(FormCollection form)
+        {
+            bool userExists = false;
+            //checks if user already exists
+
+            try
+            {
+                string checkEmail = form["Email"].ToString();
+                Users tempUser = db.user.SingleOrDefault(user1 => user1.email == checkEmail);
+                if (string.Equals(checkEmail, tempUser.email))
+                {
+                    userExists = true;
+                }
+
+            }
+            catch
+            {
+                userExists = false;
+            }
+            if (userExists)
+            {
+                ViewBag.EmailExists = "Sorry, that email is taken. Please choose another.";
+                return View();
+            }
+            string firstname = form["firstname"].ToString();
+            string lastname = form["lastname"].ToString();
+            string email = form["email"].ToString();
+            string password = form["password"].ToString();
+            Users temporary = new Users { email = email, password = password, firstname = firstname, lastname = lastname };
+
+            db.user.Add(temporary);
+            db.SaveChanges();
+
+            bool rememberMe = false;
+
+            FormsAuthentication.SetAuthCookie(email, rememberMe);
+            //Users temporaryUser = db.user.SingleOrDefault(user1 => user1.email == email && user1.password == password);
+            //Session["email"] = temporaryUser.User_ID;
+            return RedirectToAction("Index", "Home");
+        }
+
+
         // POST: /Account/Register
         
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await UserManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
-                {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
+        //[HttpPost]
+        //[AllowAnonymous]
+        //[ValidateAntiForgeryToken]
+        //public async Task<ActionResult> Register(RegisterViewModel model)
+        //{
+        //     if (ModelState.IsValid)
+        //    {
+        //        var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+        //        var result = await UserManager.CreateAsync(user, model.Password);
+        //        if (result.Succeeded)
+        //        {
+        //            await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
                     
                     
                    
-                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-                    // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+        //            // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
+        //            // Send an email with this link
+        //            // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+        //            // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+        //            // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
-                    return RedirectToAction("Index", "Home");
-                }
-                AddErrors(result);
-            }
+        //            return RedirectToAction("Index", "Home");
+        //        }
+        //        AddErrors(result);
+        //    }
 
-        //    // If we got this far, something failed, redisplay form
-            return View(model);
-        }
+        ////    // If we got this far, something failed, redisplay form
+        //    return View(model);
+        //}
 
         //
         // GET: /Account/ConfirmEmail
