@@ -71,6 +71,7 @@ namespace MissionSite.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(FormCollection form)
         {
+            //this is the new login function that validates users through the database
             string email = form["email"].ToString();
             string password = form["password"].ToString();
             bool rememberMe = false;
