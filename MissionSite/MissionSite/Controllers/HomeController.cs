@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Web;
 using System.Web.Mvc;
 
@@ -20,10 +22,39 @@ namespace MissionSite.Controllers
             return View();
         }
 
+        [STAThread]
+        static void Contact(FormCollection form)
+        {
+            string email = form["email"].ToString();
+            String APIKey = "b54b981c4ec4ddb9e7e70d2b0d417ba8";
+            String SecretKey = "d6a6e50a9f77caff2d3b90a0c2bf5ccf";
+            String From = "lbranham.cet@gmail.com";
+            String To = email;
+            string subject = form["subject"].ToString();
+            string body = form["message"].ToString();
+
+            MailMessage msg = new MailMessage();
+
+            msg.From = new MailAddress(From);
+
+            msg.To.Add(new MailAddress(To));
+
+            msg.Subject = subject;
+            msg.Body = body;
+
+            SmtpClient client = new SmtpClient("in.mailjet.com", 587);
+            client.DeliveryMethod = SmtpDeliveryMethod.Network;
+            client.EnableSsl = true;
+            client.UseDefaultCredentials = false;
+            client.Credentials = new NetworkCredential(APIKey, SecretKey);
+
+            client.Send(msg);
+        }
+        
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";
-
+          
             return View();
         }
         public ActionResult Maps(string missionName)
