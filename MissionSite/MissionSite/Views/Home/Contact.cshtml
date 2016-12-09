@@ -49,7 +49,9 @@
     <div class="col-lg-5 contact">
         <center>
             <h4> Please reach out with any questions or concerns.</h4>
-            <form id="contact_form" action="#" method="POST" enctype="multipart/form-data">
+
+                @using (Html.BeginForm("Contact", "Home", FormMethod.Post)) 
+                {
                 <div class="row">
                     <label for="name">Your name:</label><br />
                     <input id="name" class="input" name="name" type="text" value="" size="30" /><br />
@@ -71,10 +73,10 @@
                     <label for="message">Your message:</label><br />
                     <textarea id="message" class="input" name="message" rows="7" cols="30"></textarea><br />
                 </div>
+                    
                 <a href="Contact" class="btn btn-primary btn-lg btn-block" role="button">Submit!</a>
-                    @*<input id="submit_button" type="submit" value="Send email" />*@
-                
-            </form>
+                    <input id="submit_button" type="submit" value="Send email" />
+                }
         </center>
     </div>
     <div class="col-lg-3"></div>

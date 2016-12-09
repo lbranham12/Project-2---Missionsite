@@ -22,15 +22,25 @@ namespace MissionSite.Controllers
             return View();
         }
 
-        [STAThread]
-        static void Contact(FormCollection form)
+        [HttpGet]
+        public ActionResult Contact()
+        {
+            ViewBag.Message = "Your contact page.";
+
+            return View();
+        }
+
+        //[STAThread]
+        [HttpPost]
+        public ActionResult Contact(FormCollection form)
         {
             string email = form["email"].ToString();
             String APIKey = "b54b981c4ec4ddb9e7e70d2b0d417ba8";
             String SecretKey = "d6a6e50a9f77caff2d3b90a0c2bf5ccf";
             String From = "lbranham.cet@gmail.com";
             String To = email;
-            string subject = form["subject"].ToString();
+            //string subject = form["subject"].ToString();
+            string subject = "test subject, and delete this later";
             string body = form["message"].ToString();
 
             MailMessage msg = new MailMessage();
@@ -49,14 +59,10 @@ namespace MissionSite.Controllers
             client.Credentials = new NetworkCredential(APIKey, SecretKey);
 
             client.Send(msg);
-        }
-        
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-          
             return View();
         }
+        
+
         public ActionResult Maps(string missionName)
         {
             if (missionName == "Barcelona")
